@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'Betatron-Regular';
+    src: url('../media/Betatron-Regular.woff2') format('woff2'),
+        url('../media/Betatron-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+ /* html,
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    background-color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    /* cursor: none; 
+  }*/
+  
+  .cursor {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    mix-blend-mode: difference;
+    z-index: 100;
+    position: fixed;
+    display: none;
+    transition: width .5s, height .5s;
+    pointer-events: none;
+  }
+  
+  .cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: width .5s, height .5s;
+    pointer-events: none;
+  }
+  
+  .leftFixed {
+    position: fixed;
+    bottom: 0;
+    left: 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 31px;
+    z-index: 4;
+  }
+  
+  a {
+    cursor: none;
+  }
+  
+  .icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+  
+  .vLine {
+    width: 1px;
+    background-color: #fff;
+    height: 150px;
+  }
+  
+  .rightFixed {
+    position: fixed;
+    bottom: 28%;
+    right: -10vw;
+    gap: 31px;
+    display: flex;
+    align-items: center;
+    transform: rotate(90deg);
+    z-index: 4;
+  }
+  
+  .rightFixed .vLine {
+    height: 1px;
+    width: 150px;
+  }
+  
+  .rightFixedText {
+    font-size: 16px;
+  }
+  
+  .middleFixed {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 41px;
+    z-index: 4;
+  }
+  
+  .dot.active {
+    transform: rotate(0);
+    background-color: transparent;
+    border: 1px solid #fff;
+    width: 18px;
+    height: 18px;
+    transition: all .5s;
+  }
+  
+  .dot {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    transform: rotate(45deg);
+    transition: all .5s;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  * {
+    box-sizing: border-box;
+    
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+
+  /*body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  } */
+
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    background-color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  section {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }

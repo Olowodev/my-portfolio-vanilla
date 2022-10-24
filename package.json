@@ -1,0 +1,20 @@
+{
+  "name": "my-portfolio",
+  "source": "pages/Home.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/transformer-glsl": "^2.7.0",
+    "parcel": "^2.7.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.2.0",
+    "glsl-noise": "^0.0.0",
+    "glslify": "^7.1.1",
+    "gsap": "^3.11.3",
+    "locomotive-scroll": "^4.1.4",
+    "three": "^0.145.0"
+  }
+}
