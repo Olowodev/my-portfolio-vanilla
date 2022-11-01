@@ -11,10 +11,11 @@ import abstract1 from '../media/abstract1.webp'
 import abstract2 from '../media/abstract2.jpg'
 import abstract3 from '../media/abstract3.jpg'
 import abstract4 from '../media/abstract4.jpg'
-
+import { stopOverscroll } from './gsapHelperFunctions';
 
 const images = [abstract1, abstract2, abstract3, abstract4]
 
+export function three() {
 const meSection = document.getElementById('me')
 const workSection = document.getElementById('work')
 // init
@@ -32,6 +33,7 @@ const workGeometry = new THREE.PlaneGeometry( 0.4, 0.4, 16, 16 );
 
 
 const clock = new THREE.Clock()
+const raycaster = new THREE.Raycaster()
 
 //material to add shaders to mesh
 const material = new THREE.ShaderMaterial({
@@ -97,6 +99,28 @@ workRenderer.setAnimationLoop( workAnimation );
 document.getElementById('work').appendChild( workRenderer.domElement );
 document.getElementById('me').appendChild( renderer.domElement );
 
+
+//mouse 
+function mouseEvent() {
+  const mouse = new THREE.Vector2()
+
+  function onMouseMove(event) {
+   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+   mouse.y = ( event.clientY / window.innerHeight) * 2 + 1;
+
+   raycaster.setFromCamera(mouse, workCamera)
+
+   var intersects = raycaster.intersectObjects( workScene.children)
+
+   for (var i = 0; i < intersects.length; i++) {
+    intersects[i].object.material.color.set(0xff0000)
+   }
+  }
+
+  window.addEventListener('mousemove', onMouseMove, false)
+}
+
+
 //resize
 function resize() {
     const width = meSection.offsetWidth;
@@ -157,26 +181,45 @@ function workAnimation ( time ) {
 
 gsap.registerPlugin(ScrollTrigger);
 
+
+// ScrollTrigger.normalizeScroll(true)
+//       ScrollTrigger.normalizeScroll({
+//         type: "touch,wheel,pointer", // now the page will be drag-scrollable on desktop because "pointer" is in the list
+//         momentum: self => Math.min(3, self.velocityY / 1000) // dynamically control the duration of the momentum when flick-scrolling
+//       });
+
 // Using Locomotive Scroll from Locomotive https://github.com/locomotivemtl/locomotive-scroll
 
-const locoScroll = new LocomotiveScroll({
-  el: document.querySelector(".smooth-scroll"),
-  smooth: true
-});
-// each time Locomotive Scroll updates, tell ScrollTrigger to update too (sync positioning)
-locoScroll.on("scroll", ScrollTrigger.update);
+// const locoScroll = new LocomotiveScroll({
+//   el: document.querySelector(".smooth-scroll"),
+//   smooth: true,
+//   tablet: {
+//     smooth: true
+//   }
+// });
+// // each time Locomotive Scroll updates, tell ScrollTrigger to update too (sync positioning)
+// locoScroll.on("scroll", ScrollTrigger.update);
 
-// tell ScrollTrigger to use these proxy methods for the ".smooth-scroll" element since Locomotive Scroll is hijacking things
-ScrollTrigger.scrollerProxy(".smooth-scroll", {
+
+ScrollTrigger.scrollerProxy('.smooth-scroll', {pinType: 'fixed', 
   scrollTop(value) {
-    return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
-  }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+    return arguments.length ? document.querySelector('.smooth-scroll').scrollTop = value : document.querySelector('.smooth-scroll').scrollTop;
+  },
   getBoundingClientRect() {
     return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
-  },
-  // LocomotiveScroll handles things completely differently on mobile devices - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied to the container (the LocomotiveScroll-controlled element).
-  pinType: document.querySelector(".smooth-scroll").style.transform ? "transform" : "fixed"
-});
+  }
+})
+// // tell ScrollTrigger to use these proxy methods for the ".smooth-scroll" element since Locomotive Scroll is hijacking things
+// ScrollTrigger.scrollerProxy(".smooth-scroll", {
+//   scrollTop(value) {
+//     return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+//   }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+//   getBoundingClientRect() {
+//     return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+//   },
+//   // LocomotiveScroll handles things completely differently on mobile devices - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied to the container (the LocomotiveScroll-controlled element).
+//   pinType: document.querySelector(".smooth-scroll").style.transform ? "transform" : "fixed"
+// });
 
 gsap.timeline( {
     scrollTrigger: {
@@ -230,18 +273,30 @@ tl.to(state, {
     gsap.to(p, {color: 'rgba(255, 255, 255, 0.2)'})
   }
 
-  locoScroll.on('scroll', () => {
+  // locoScroll.on('scroll', () => {
+  //   const div = gsap.getProperty('#story', 'y')
+  //   console.log(div)
+  //  let ps = gsap.utils.toArray('#p')
+  //  console.log(ps)
+  //    ps.forEach((p, i) => {
+  //      if (div < (-355 - (75 * i))) {
+  //        changeColorToWhite(p)
+  //      } else if (div === 0) {
+  //        changeColorToGrey(p)
+  //      }
+  //    })
+  // })
+
+  document.getElementById('main').addEventListener('scroll', () => {
     const div = gsap.getProperty('#story', 'y')
-    console.log(div)
-   let ps = gsap.utils.toArray('#p')
-   console.log(ps)
-     ps.forEach((p, i) => {
-       if (div < (-355 - (75 * i))) {
-         changeColorToWhite(p)
-       } else if (div === 0) {
-         changeColorToGrey(p)
-       }
-     })
+    let ps = gsap.utils.toArray('#p')
+    ps.forEach((p, i) => {
+      if (div < (-355 - (75 * i))) {
+        changeColorToWhite(p)
+      } else if (div === 0) {
+        changeColorToGrey(p)
+      }
+    })
   })
 
   
@@ -251,7 +306,10 @@ tl.to(state, {
 
 
 // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
-ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
-
+//ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+console.log('test')
 // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
 ScrollTrigger.refresh();
+}
+
+three()
